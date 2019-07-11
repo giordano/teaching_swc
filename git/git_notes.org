@@ -1,0 +1,418 @@
+* Set up machine
+** Socrative
+   - Teacher paced (with defaults)
+** My account
+
+   - Remove 2FA of GH.
+     or hide your config
+   #+BEGIN_SRC bash
+     # On a "secret" terminal
+     mv ~/.gitconfig ~/.gitconfig_mine
+     # Explain how to introduce yourself to git on public terminal
+     git config --global user.name "Vlad Dracula"
+     git config --global user.email "vlad@tran.sylvan.ia"
+     git ...
+     # Back on my terminal
+     mv ~/.gitconfig_mine ~/.gitconfig
+   #+END_SRC
+
+*** tmux
+    - open terminal (profile with white background (Me))
+    - resize to an appropriate size (full screen) and font size
+    - run: ~./swc-shell-split-window.sh~
+    - on my other terminal (my desktop)
+      run: ~tmux attach-session -t swc~
+      kill it with: ~tmux kill-session -t swc~
+   - If error on tail about inotify: sudo sysctl -w user.max_inotify_watches=1048576
+****  When simulating two people
+    - open terminal (profile with non-white background (Friend))
+    - repeat the above with swc2
+*** browser
+    - Resize to secondary screen size
+    - Tabs:
+      - [[https://pad.carpentries.org/2019-07-15-UCL][etherpad]]
+      - [[https://b.socrative.com/login/teacher/][socrative]] (teacher login)
+      - [[https://swcarpentry-i18n.github.io/git-novice/fig/phd101212s.png][phdcommics]]
+* Git session 
+** TODO Room
+  On pairs looking towards the projector.
+** Students
+- install git
+- account on github (remember the password)
+** Editor
+- nano, but if you are familiar with other and your system use it (but better at
+  the end to don't stop the class.
+** Etherpad
+- https://b.socrative.com/login/student/  Room: RITS
+* Session
+** TODO What is it?
+Who uses Undo? / mail back and forth / programs?
+Check with git config --list that you've not copied me
+http://swcarpentry.github.io/git-novice/01-basics.html
+add images to my presentation.
+** Set up git
+   #+BEGIN_SRC bash
+     git config --global user.name "Vlad Dracula"
+     git config --global user.email "vlad@tran.sylvan.ia"
+     git config --global color.ui "auto"
+     git config --global core.editor "nano -w"
+     git config --list
+   #+END_SRC
+ global means to any repo we do
+ git verb => all the commands.
+
+** Creating a repository
+  - Go to a common place to create a directory: ~/Desktop/
+   #+BEGIN_SRC bash
+     cd ~/Desktop/
+     mkdir recipes
+     cd recipes
+   #+END_SRC
+
+  - Initialise the repository
+   #+BEGIN_SRC bash
+     git init
+   #+END_SRC
+
+   #+BEGIN_SRC bash
+     ls # doesn't show anything
+     ls -a # it does! .git directory
+   #+END_SRC
+
+  - let's see the status:
+   #+BEGIN_SRC bash
+     git status # nothing new :)
+   #+END_SRC
+
+  - *Question*:
+  What happens if git init inside another git repo?
+  Whiteboard drawing.
+
+** Tracking changes 
+   modify-add-commit cycle
+   where is the info stored?
+   #+BEGIN_SRC bash
+     nano guacamole.md
+   #+END_SRC
+   #+BEGIN_SRC text
+     # Ingredients
+     # Instructions
+   #+END_SRC
+   #+BEGIN_SRC bash
+     ls # guacamole is there!
+     git status # something new!
+     git add guacamole.md
+     git status # now is keeping track, but it's not "saved"
+     git commit -m "Created template for recipe"
+   #+END_SRC
+
+   We've created a commit or revision with an identifier!
+   -m : message for the revision.
+   if you don't use the -m: you get nano to write, then you can write longer
+
+   Good commit message: will I know by reading the commit message what I did?
+                        will it be meaningful to others?
+
+   #+BEGIN_SRC bash
+     git status # shows nothing again :)
+
+     git log # we see the history, our log; *full identifier*.
+   #+END_SRC
+   The info is stored in .git directory we saw before: ls -a
+
+  - modify again
+   #+BEGIN_SRC bash
+     nano guacamole.md
+   #+END_SRC
+   #+BEGIN_SRC text
+     # Ingredients
+     - avocado
+     - lemon
+     - salt
+   #+END_SRC
+   #+BEGIN_SRC bash
+    git status # shows which files has been modified
+    git diff # shows all the changes
+   #+END_SRC
+
+    1) the command (a diff);
+    2) labels of each file.
+    3,4) the files being compared;
+    5) line changes and where they occur.
+
+    if we are happy with the changes, then proceed:
+   #+BEGIN_SRC bash
+     git commit -m "Added basic guacamole's ingredients"
+     git status
+   #+END_SRC
+
+
+    *!!!UPSS!!!* We forgot to add, so nothing was committed
+
+    *stagging area*
+    Place we add change set but not yet committed
+    Drawing (steps) / page!
+
+   #+BEGIN_SRC bash
+     nano  guacamole # new line => lemon -> lime
+     git diff  # see the new line
+     git add guacamole.md # added to the staging
+     git diff # shows nothing
+
+     git diff --staged # between last commit and what's in the staging area.
+     git commit -m "Modified to the traditional recipe"
+     git status
+     git log  # Notice, if log is too long, ":" at the end of page? q to quit, spc to browse.
+
+     git log -1
+     git log --oneline
+     git log --oneline --graph --all --decorate
+   #+END_SRC
+
+***  Recap
+
+    Drawing with multiple files into .git
+
+    *excercises*
+    1.- commit messages.
+
+    2.- changes to git / platform
+
+    3.- BIO: green sticky when done, we pass and look at the differences
+
+    //4.- Authorship
+
+
+
+** exploring history
+    - Indentify and use git commit numbers
+    - compare various versions of tracked files
+    - restore old verions
+   #+BEGIN_SRC bash
+     git diff HEAD~1 guacamole.md # tells us between HEAD (now) and HEAD~1
+   #+END_SRC
+
+   We could compare even further in time
+   #+BEGIN_SRC bash
+     git diff HEAD~2 guacamole.md  # HEAD~123 Goes 123 commits back in time.
+   #+END_SRC
+
+   #+BEGIN_SRC bash
+     git diff xxxxxxxxxxx guacamole.md # that id is unique
+   #+END_SRC
+
+   but we can run it just with the first few, because typing all is too much
+   #+BEGIN_SRC bash
+     git dif ff23b4e guacamole.md
+   #+END_SRC
+
+
+   *restore an old versions*
+
+   let's overwrite our file by mistake,
+   #+BEGIN_SRC bash
+     nano guacamole.md # delete all write something new.
+                       # There's somewhere where the avocados are red
+
+     git status # there few changes, but they haven't been staged
+   #+END_SRC
+
+   To recover them back:
+   #+BEGIN_SRC bash
+     git checkout HEAD guacamole.md
+   #+END_SRC
+
+   *CHECKOUT* restores an old version. In that case we are recovering the version in HEAD
+   but we could recover any tother version:
+   #+BEGIN_SRC bash
+     git checkout XXXXXX guacamole.md
+   #+END_SRC
+
+
+   *common case* git status tell you how! :)
+   -- is to tell git is a file, and not a commit identifier.
+
+   # excercises
+   - Jennifer files in python: 5)
+   - venus changes: 2)
+
+** Multiple files
+   nano readme.md
+   -
+   -
+   nano guacamole.md
+   - peel the guacamole, remove the seed and add it to a bowl
+** Ignoring things
+   - Configuring git to ignore files
+   - explain why it is useful.
+   #+BEGIN_SRC bash
+     mkdir receipts # groceries
+     touch a.png b.png c.png receipts/a.jpg receipts/b.jpg
+     # or touch {a..z}.dat results/sample_{020..300}.out
+   #+END_SRC
+
+   #+BEGIN_SRC bash
+     git status
+   #+END_SRC
+   new files!
+
+   #+BEGIN_SRC bash
+     nano .gitignore
+   #+END_SRC
+   #+BEGIN_SRC text
+     *.dat
+     results/
+   #+END_SRC
+
+   We need to add it to the repository
+   #+BEGIN_SRC bash
+     git add .gitignore
+     git commit -m 'ignoring dat and result files'
+   #+END_SRC
+
+   Try to add a.dat
+   #+BEGIN_SRC bash
+     git add a.dat
+   #+END_SRC
+   Help from git! :) - (read the output!)
+
+   #+BEGIN_SRC bash
+     git status --ignored # to see all the files
+   #+END_SRC
+
+   - excercises
+     1) results/plots
+     !if you don't put the slash and get a file in the future called plots then
+
+     2) check man gitignore
+     !final.dat
+
+     3) results/data/**
+
+     4) as noting
+
+     5) log files
+
+** Remotes in GH
+   - Explain what remote repositories are and why are useful
+   - push to or pull from a remote repository
+   - Log in into github; create new repository: recipes
+
+   [[http://swcarpentry.github.io/git-novice/fig/git-freshly-made-github-repo.svg][Diagram]]
+   GitHub does: (mkdir recipes; cd recipes; git init)
+
+   Copy the url (https) and add it as our remote
+   #+BEGIN_SRC bash
+     git remote add origin .... #=> magic under .git
+     git remote -v
+   #+END_SRC
+
+   - what's origin?
+   #+BEGIN_SRC bash
+     git push origin master
+   #+END_SRC
+
+   *windows* unset SSH_ASKPASS # if people has troubles.
+
+   We can pull also from the remote:
+   #+BEGIN_SRC bash
+     git pull origin master
+   #+END_SRC
+
+
+   - excercises
+     - Explain to your peer how git push is different of git commit
+
+** Collaborating
+   - clone a remote repository
+   - collaborate and push
+
+   Add collaborators to your repository.
+   Diagram with the repository.
+
+*** step by step
+
+    *Collaborator*
+      #+BEGIN_SRC bash
+        git clone htt... recipes_<name_friend> # Otherwise it will fail as we have a recipes already
+        # Note that some people may do it inside the previous recipes
+        cd recipes_<name_friend>
+        nano hummus.md
+      #+END_SRC
+      #+BEGIN_SRC text
+        # Ingredients
+        - chickpeas
+        - lemon
+        - olive oil
+        - salt
+      #+END_SRC
+      #+BEGIN_SRC bash
+       git add hummus.md
+       git commit -m 'Ingredients for hummus added'
+       git push origin master
+      #+END_SRC
+
+    *Owner*
+      #+BEGIN_SRC bash
+        git pull origin master
+      #+END_SRC
+
+*** Excercise
+    - switch roles and repeat process (with other stuff)
+      (add instructions for Guacamole:
+      - put one avocado into a bowl.
+      - pinch of salt in the bowl
+      - add a tablespoon of lime in the bowl
+      - mix it well
+      - serve it with tortillas.
+
+    - review changes
+    - comments on github
+ 
+
+
+** Conflicts
+   - Explain what conflicts are and when they occur
+   - Resolve conflicts
+
+     guacamole.md - contains some text
+     we add a line at the end with our name; add, commit and push
+     = the other partner: without updating the repository:
+     add a new line at the end, add, commit and push
+     *!rejected!*
+     # diagram!
+     we need to pull first.
+     git pull => *Conflict*
+     open the file: check for the conflicts
+     Now you choose which one you want.
+     git add, commit, push *solved*
+
+** Open Science, Licensing, Citation, Hosting
+
+
+
+** Questions
+- why do we use github?
+- 
+
+** links
+
+http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
+https://presentate.com/bobthecow/talks/changing-history  (from this one I like what it says in slide 21!)
+
+
+* Resources (at the end)
+** GUIs
+https://git-scm.com/downloads/guis
+I have gitg
+** Branching
+http://learngitbranching.js.org/?demo
+** diff/merge tools
+https://sourcegear.com/diffmerge/
+but there are many and git asks you what to use
+** Keep learning:
+   - https://github.com/jlord/git-it-electron
+
+
+** Branching slowly
+   - http://git-school.github.io/visualizing-git/#free-remote
