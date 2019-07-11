@@ -1,0 +1,3 @@
+[submodule "git/git-swc-worksheet"]
+	path = git/git-swc-worksheet
+	url = https://github.com/omsai/git-swc-worksheet.git
