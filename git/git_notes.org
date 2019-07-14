@@ -1,3 +1,6 @@
+#+STARTUP: showall
+#+STARTUP: showeverything
+
 * Set up machine
 ** Socrative
    - Teacher paced (with defaults)
@@ -48,7 +51,7 @@
 ** TODO What is it?
 Who uses Undo? / mail back and forth / programs?
 Check with git config --list that you've not copied me
-http://swcarpentry.github.io/git-novice/01-basics.html
+http://swcarpentry.github.io/git-novice/01-basics/index.html
 add images to my presentation.
 ** Set up git
    #+BEGIN_SRC bash
@@ -84,9 +87,9 @@ add images to my presentation.
      git status # nothing new :)
    #+END_SRC
 
-  - *Question*:
-  What happens if git init inside another git repo?
-  Whiteboard drawing.
+  - *Socrative Question*:
+    1. What happens if git init inside another git repo?
+    - Whiteboard drawing.
 
 ** Tracking changes 
    modify-add-commit cycle
@@ -149,7 +152,7 @@ add images to my presentation.
 
     *!!!UPSS!!!* We forgot to add, so nothing was committed
 
-    *stagging area*
+    *staging area*
     Place we add change set but not yet committed
     Drawing (steps) / page!
 
@@ -173,14 +176,14 @@ add images to my presentation.
 
     Drawing with multiple files into .git
 
-    *excercises*
-    1.- commit messages.
+    *Socrative questions*
+      2. commit messages.
 
-    2.- changes to git / platform
+      4. changes to git / platform
 
-    3.- BIO: green sticky when done, we pass and look at the differences
+      6. BIO: green sticky when done, we pass and look at the differences
 
-    //4.- Authorship
+      //4.- Authorship
 
 
 
@@ -232,9 +235,9 @@ add images to my presentation.
    *common case* git status tell you how! :)
    -- is to tell git is a file, and not a commit identifier.
 
-   # excercises
-   - Jennifer files in python: 5)
-   - venus changes: 2)
+   - **Socrative questions**
+     7. Jennifer files in python: 5)
+     8. ketchup: 2)
 
 ** Multiple files
    nano readme.md
@@ -264,6 +267,11 @@ add images to my presentation.
      results/
    #+END_SRC
 
+   #+BEGIN_SRC bash
+     git status
+   #+END_SRC
+   new files are not shown any more, but there is ~.gitignore~.
+
    We need to add it to the repository
    #+BEGIN_SRC bash
      git add .gitignore
@@ -280,11 +288,11 @@ add images to my presentation.
      git status --ignored # to see all the files
    #+END_SRC
 
-   - excercises
-     1) results/plots
+   - **Socrative questions**
+     11. results/plots
      !if you don't put the slash and get a file in the future called plots then
 
-     2) check man gitignore
+     12. check man gitignore
      !final.dat
 
      3) results/data/**
